@@ -5,6 +5,8 @@ MAINTAINER mudler <mudler@sabayonlinux.org>
 # Set locales to en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 
+ENV ALLOW=0.0.0.0/0
+
 RUN rsync -av "rsync://rsync.at.gentoo.org/gentoo-portage/licenses/" "/usr/portage/licenses/" && \
         ls /usr/portage/licenses -1 | xargs -0 > /etc/entropy/packages/license.accept
 
@@ -25,7 +27,7 @@ ENV HOME /root
 # Define working directory.
 WORKDIR /
 
-CMD ["/usr/bin/distccd", "--allow", "0.0.0.0/0", "--user", "distcc", "--log-level", "notice", "--log-stderr", "--no-detach"]
+CMD [ "sh", "-c" , "/usr/bin/distccd", "--allow", "${ALLOW}", "--user", "distcc", "--log-level", "notice", "--log-stderr", "--no-detach"]
 
 EXPOSE 3632
 
